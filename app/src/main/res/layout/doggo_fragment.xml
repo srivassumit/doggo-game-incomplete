@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/name_game_title_text_margin"
+        android:textColor="@color/darkGray"
+        android:textSize="22sp"
+        android:gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Who is this good boy?"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/face_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/name_game_title_text_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title">
+
+        <ImageView
+            android:id="@+id/face_1"
+            android:layout_width="@dimen/image_h_w"
+            android:layout_height="@dimen/image_h_w"
+            android:layout_marginStart="@dimen/name_game_title_text_margin"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/cdFace"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/face_2"
+            android:layout_width="@dimen/image_h_w"
+            android:layout_height="@dimen/image_h_w"
+            android:background="@android:color/transparent"
+            android:layout_marginEnd="@dimen/name_game_title_text_margin"
+            android:contentDescription="@string/cdFace"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/face_3"
+            android:layout_width="@dimen/image_h_w"
+            android:layout_height="@dimen/image_h_w"
+            android:layout_marginTop="@dimen/name_game_title_text_margin"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/cdFace"
+            app:layout_constraintStart_toStartOf="@id/face_1"
+            app:layout_constraintEnd_toEndOf="@id/face_1"
+            app:layout_constraintTop_toBottomOf="@id/face_1" />
+
+        <ImageView
+            android:id="@+id/face_4"
+            android:layout_width="@dimen/image_h_w"
+            android:layout_height="@dimen/image_h_w"
+            android:layout_marginTop="@dimen/name_game_title_text_margin"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/cdFace"
+            app:layout_constraintEnd_toEndOf="@id/face_2"
+            app:layout_constraintTop_toBottomOf="@id/face_2" />
+
+        <ImageView
+            android:id="@+id/face_5"
+            android:layout_width="@dimen/image_h_w"
+            android:layout_height="@dimen/image_h_w"
+            android:layout_marginTop="@dimen/name_game_title_text_margin"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/cdFace"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/face_3" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
