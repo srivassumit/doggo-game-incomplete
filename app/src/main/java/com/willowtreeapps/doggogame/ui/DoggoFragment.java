@@ -2,6 +2,7 @@ package com.willowtreeapps.doggogame.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
@@ -37,6 +38,11 @@ public class DoggoFragment extends Fragment implements Question.View {
     private static final Interpolator FAST_OUT_LINEAR_IN = new FastOutLinearInInterpolator();
     private static final TypeEvaluator ARGB_EVALUATOR = new ArgbEvaluator();
     private static final String KEY_DOGGO = "doggo";
+
+    //Animation times for round completion, in milliseconds
+    private static final int ANIMATION_DEFAULT_MS = 800;
+    private static final int ANIMATION_CORRECT_MS = 1600;
+    private static final int ANIMATION_OFFSET_MS = 120;
 
     private Listener listener;
 
@@ -82,13 +88,15 @@ public class DoggoFragment extends Fragment implements Question.View {
         presenter.pickCorrectDoggo(savedInstanceState == null ? -1 : savedInstanceState.getInt(KEY_DOGGO));
 
         if (savedInstanceState == null) {
+            //Animate in the title
             title.setAlpha(0);
-            title.animate().alpha(1).start();
+            ObjectAnimator.ofFloat(title, View.ALPHA, 1).start();
+
+            //Animate in each face
             for (int i = 0; i < container.getChildCount(); i++) {
-                ImageView face = faces.get(i);
-                face.setScaleX(0);
-                face.setScaleY(0);
-                face.animate().scaleX(1).scaleY(1).setStartDelay(800 + 120 * i).setInterpolator(OVERSHOOT).start();
+                AnimatorSet set = getAnimateIn(faces.get(i), ANIMATION_DEFAULT_MS + (ANIMATION_OFFSET_MS * i));
+                set.setInterpolator(OVERSHOOT);
+                set.start();
             }
         }
     }
@@ -155,25 +163,55 @@ public class DoggoFragment extends Fragment implements Question.View {
     }
 
     private void animateNextRound(int correctIndex) {
-        title.animate().alpha(0).setStartDelay(800).start();
-        int n = container.getChildCount();
-        for (int i = 0; i < n; i++) {
-            if (i != correctIndex) {
-                faces.get(i).animate().scaleX(0).scaleY(0).setStartDelay(800 + 120 * i).setInterpolator(FAST_OUT_LINEAR_IN).start();
-            } else {
-                faces.get(i).animate().scaleX(0).scaleY(0).setStartDelay(1800 + 200 * i).setInterpolator(FAST_OUT_LINEAR_IN).setListener(new AnimatorListenerAdapter() {
+        //Animate out the title
+        Animator titleAnimator = ObjectAnimator.ofFloat(title, View.ALPHA, 0);
+        titleAnimator.setStartDelay(ANIMATION_DEFAULT_MS);
+        titleAnimator.start();
 
+        //Animate each face
+        for (int i = 0; i < container.getChildCount(); i++) {
+            if (i != correctIndex) {
+                getAnimateOut(faces.get(i), ANIMATION_DEFAULT_MS + (ANIMATION_OFFSET_MS * i)).start();
+            } else {
+                AnimatorSet set = getAnimateOut(faces.get(i), ANIMATION_CORRECT_MS + (ANIMATION_OFFSET_MS * i));
+                set.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         if (listener != null) {
                             listener.onRoundComplete();
                         }
                     }
-                }).start();
+                });
+                set.start();
             }
         }
     }
 
+    private AnimatorSet getAnimateOut(View view, int delayTime) {
+        AnimatorSet set = new AnimatorSet();
+
+        Animator scaleX = ObjectAnimator.ofFloat(view, View.SCALE_X, 0);
+        Animator scaleY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 0);
+
+        set.playTogether(scaleX, scaleY);
+        set.setStartDelay(delayTime);
+        set.setInterpolator(FAST_OUT_LINEAR_IN);
+
+        return set;
+    }
+
+    private AnimatorSet getAnimateIn(View view, int delayTime) {
+        AnimatorSet set = new AnimatorSet();
+
+        Animator scaleX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1);
+        Animator scaleY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1);
+
+        set.playTogether(scaleX, scaleY);
+        set.setStartDelay(delayTime);
+        set.setInterpolator(FAST_OUT_LINEAR_IN);
+
+        return set;
+    }
     private void removeClickListener(int index) {
         faces.get(index).setOnClickListener(null);
     }
