@@ -79,6 +79,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/face_3" />
+
+        <!-- TODO: #ADD-IMAGE -->
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
