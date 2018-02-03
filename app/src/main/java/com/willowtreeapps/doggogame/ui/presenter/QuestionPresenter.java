@@ -35,7 +35,12 @@ public class QuestionPresenter implements Question.Presenter {
     @Override
     public void checkAnswer(int index) {
         tries++;
-        //TODO: #CHECK-ANSWER
+        //#CHECK-ANSWER
+        if (index == correctIndex) {
+            view.setCorrectAnswer(index);
+        } else {
+            view.setWrongAnswer(index);
+        }
     }
 
     @Override
@@ -50,15 +55,26 @@ public class QuestionPresenter implements Question.Presenter {
 
     @Override
     public void pickDoggos() {
-        //TODO: #PICK-DOGS
+        //#PICK-DOGS
+        pickedDoggos = randomizer.pickN(doggos, choiceNumber);
+        loadImages();
     }
 
     @Override
     public void pickCorrectDoggo(int savedIndex) {
-        //TODO: #PICK-CORRECT-DOG
+        //#PICK-CORRECT-DOG
+        if (savedIndex >= 0) {
+            correctIndex = savedIndex;
+        } else {
+            correctIndex = randomizer.pickOneIndex(pickedDoggos);
+        }
+        view.setTitle(pickedDoggos.get(correctIndex).getBreedName());
     }
 
     private void loadImages() {
-        //TODO: #PICK-DOGS
+        //#PICK-DOGS
+        for (int i=0; i<pickedDoggos.size(); i++) {
+            view.setImage(i, pickedDoggos.get(i).getImageUrl());
+        }
     }
 }

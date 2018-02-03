@@ -54,7 +54,18 @@ public class DoggoRepository {
         api.getBreeds().enqueue(new Callback<DoggoBreedResponse>() {
             @Override
             public void onResponse(Call<DoggoBreedResponse> call, Response<DoggoBreedResponse> response) {
-                //TODO: #FIX-API
+                //#FIX-API
+                if (response.isSuccessful()) {
+                    DoggoBreedResponse breedResponse = response.body();
+                    if (breedResponse != null) {
+                        String status = breedResponse.getStatus();
+                        if (status != null && status.equals(DoggoBreedResponse.SUCCESS)) {
+                            getImages(breedResponse.getBreeds());
+                        }
+                    }
+                } else {
+                    onFailure(call, getError(response, "Error getting breed"));
+                }
             }
 
             @Override

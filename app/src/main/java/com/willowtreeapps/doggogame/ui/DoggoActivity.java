@@ -48,7 +48,8 @@ public class DoggoActivity extends AppCompatActivity implements DoggoRepository.
     public void onSuccess(List<Doggo> doggos) {
         progress.setVisibility(INVISIBLE);
         container.setVisibility(VISIBLE);
-        //TODO: #SET-UP-ACTIVITY
+        //#SET-UP-ACTIVITY
+        startRound();
     }
 
     @Override
@@ -63,7 +64,10 @@ public class DoggoActivity extends AppCompatActivity implements DoggoRepository.
     }
 
     private void initDoggos() {
-        //TODO: #SET-UP-ACTIVITY
+        //#SET-UP-ACTIVITY
+        if (!doggoRepository.hasDoggos()) {
+            doggoRepository.setCallback(this);
+        }
     }
 
     private void startRound() {
@@ -74,7 +78,8 @@ public class DoggoActivity extends AppCompatActivity implements DoggoRepository.
 
     @Override
     public void onRoundComplete() {
-        //TODO: #ROUND-COMPLETE
+        //#ROUND-COMPLETE
+        goToNextRound();
     }
 
     private void goToNextRound() {
